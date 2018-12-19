@@ -1,5 +1,5 @@
 <?php
-namespace agenda;
+namespace tp4_password;
 use \PDO;
 
 require_once '../config/DBConnection.php';
@@ -20,37 +20,10 @@ class UserModel extends User {
         $pdo = new DBConnection();
         $db = $pdo->DBConnect();
         try {
-            $sql = "INSERT INTO " . $this->table . "(name) VALUES(?)";
+            $sql = "INSERT INTO " . $this->table . "(name, date_create_at, psw_clear, psw_md, psw_hash, psw_salt, note) VALUES(?, NOW(), ?, ?, ?, ?, ?)";
             $record = $db->prepare($sql);
-
-            return $record->execute(array($this->getName())) ? JsonResult::succeededReturn() :
-                JsonResult::failledReturn();
-            
-        } catch (PDOException $exc) {
-            return JsonResult::failledReturn($exc->getMessage());
-        }   
-    }
-
-    public function update(){
-        $pdo = new DBConnection();
-        $db = $pdo->DBConnect();
-        try {
-            $sql = "UPDATE " . $this->table . " SET name = ? WHERE id = ?";
-            $record = $db->prepare($sql);
-            
-            return $record->execute(array($this->getName(), $this->getId())) ? JsonResult::succeededReturn() : JsonResult::failledReturn();
-        } catch (PDOException $exc) {
-            return JsonResult::failledReturn($exc->getMessage());
-        }   
-    }
-
-    public function delete(){
-        $pdo = new DBConnection();
-        $db = $pdo->DBConnect();
-        try {
-            $sql = "DELETE FROM " . $this->table . " WHERE id = ?";
-            $record = $db->prepare($sql);
-            return $record->execute(array($this->getId())) ? JsonResult::succeededReturn() :
+            $myarray = array($this->getName(), $this->getPasswordClear(), $this->getPasswordMD5(), $this->getPasswordHashed(), $this->getPasswordSalt(), $this->getNote());
+            return $record->execute($myarray) ? JsonResult::succeededReturn() :
                 JsonResult::failledReturn();
         } catch (PDOException $exc) {
             return JsonResult::failledReturn($exc->getMessage());

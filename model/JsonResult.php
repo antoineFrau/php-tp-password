@@ -1,5 +1,5 @@
 <?php
-namespace agenda;
+namespace tp4_password;
 class JsonResult {
     public static $json;
 

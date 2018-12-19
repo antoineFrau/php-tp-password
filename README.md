@@ -1,13 +1,13 @@
-# TP Agenda
+# TP Password
 
-https://github.com/antoineFrau/php-tp-agenda 
+https://github.com/antoineFrau/php-tp-password
 
 ## Requirements
 Avoir un serveur web local, avec PHP, MySQL ect..
 
 ## Install
 ### SQL
-Executer le script `db-mysql/agenda_DB.sql` pour avoir la structure de la base de données (s'occupe de créer la base de données "agenda").
+Executer le script `db-mysql/password_DB.sql` pour avoir la structure de la base de données (s'occupe de créer la base de données "tp3_password").
 Changer dans le fichier de configuration `config/BDConfig.php` afin qu'il corresponde à votre serveur local.
 ```
 define('DB_USER',  'root');

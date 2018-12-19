@@ -1,5 +1,5 @@
 <?php
-namespace agenda;
+namespace tp4_password;
 
 ini_set('display_errors', 1	); // 0 No show errors, 1
 

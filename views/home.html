@@ -1,0 +1,47 @@
+<div>
+    <div class="container text-center">
+        <h1>Generation de mot de passe !</h1>
+        <br/>
+        <br/>
+        <br/>
+        <div class="alert alert-info" role="alert">
+            <h3>La phrase à rentenir :</h3>
+            <p id="sentence"></p>
+        </div>
+        <br />
+        <br />
+        <div class="alert alert-success" role="alert">
+            <h3>Votre mot de passe :</h3>
+            <p id="password"></p>
+        </div>
+    </div>
+</div>
+<script>
+    var uarticle = new Array("The", "A", "One", "Some", "Any");
+    var noun = new Array("boy", "girl", "dog", "town", "car");
+    var verb = new Array("drove", "jumped", "ran", "walked", "skipped");
+    var larticle = new Array("the", "a", "one", "some", "any");
+    var preposition = new Array("to", "from", "over", "under", "on");
+
+    function sentence(){
+        var rand1 = Math.floor(Math.random() * uarticle.length);
+        var rand2 = Math.floor(Math.random() * noun.length);
+        var rand2a = Math.floor(Math.random() * noun.length);
+        while (rand2 == rand2a) { rand2a = Math.floor(Math.random() * noun.length); }
+        var rand3 = Math.floor(Math.random() * verb.length);
+        var rand4 = Math.floor(Math.random() * larticle.length);
+        while (rand4 == rand1) { rand4 = Math.floor(Math.random() * larticle.length); }
+        var rand5 = Math.floor(Math.random() * preposition.length);
+        var space = " ";
+
+        return uarticle[rand2] + space + noun[rand2] + space + verb[rand3] + space + preposition[rand1] + space + larticle[rand4] + space + noun[rand2a];
+    }
+    var str = sentence() + " ! " + sentence() + "."
+    var sentences = str.split(' ')
+    document.getElementById('sentence').innerHTML = str
+    var password = ''
+
+    for(var i in sentences)
+        password += sentences[i].substring(0,1)
+    document.getElementById('password').innerHTML = password
+</script>

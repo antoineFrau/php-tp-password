@@ -1,5 +1,5 @@
 <?php
-namespace agenda;
+namespace tp4_password;
 
 use \PDO;
 require_once 'BDConfig.php'; 

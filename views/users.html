@@ -6,10 +6,12 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">id</th>
         <th scope="col">Nom</th>
-        <th scope="col">Supprimer</th>
-        <th scope="col">Modifier</th>
+        <th scope="col">Clair</th>
+        <th scope="col">Hash</th>
+        <th scope="col">MD5</th>
+        <th scope="col">SALT</th>
+        <th scope="col">Note</th>
       </tr>
     </thead>
     <tbody id="users_list">
@@ -34,6 +36,10 @@
           <div class="form-group">
             <label for="user-name" class="col-form-label">Nom:</label>
             <input type="text" class="form-control" id="user-name" autofocus>
+          </div>
+          <div class="form-group">
+            <label for="user-name" class="col-form-label">Password:</label>
+            <input type="text" class="form-control" id="user-password" autofocus>
           </div>
         </div>
         <div class="modal-footer">
@@ -63,12 +69,15 @@
           users = dataJSON.data[0]
           for (var i = 0; i < Object.keys(users).length; i++) {
             var element = users[i]
+            console.log(element.psw_md)
             var row = '<tr id="row_'+element.id+'">'+
               '<th scope="row">'+(i+1)+'</th>'+
-              '<td>'+element.id+'</td>'+
-              '<td>'+element.name+'</td>'+
-              '<td><button type="button" onclick="delete_user('+element.id+')" class="btn btn-danger">Supprimer</button></td>'+
-              '<td><button type="button" id="update_user_btn" class="btn btn-info" data-toggle="modal" data-id="'+element.id+'" data-name="'+element.name+'" data-target="#userAddUpdate" data-action="update" >Modifier</button></td>'+
+              '<td>'+element.name+'</td>' +
+              '<td>'+element.psw_clear+'</td>'+
+              '<td>'+element.psw_hash.substring(0, 10)+'..</td>'+
+              '<td>'+element.psw_md+'</td>' +
+              '<td>'+element.psw_salt+'</td>'+
+              '<td>'+element.note+'</td>' +
             '</tr>'
             $('#users_list').append(row)
           }
@@ -79,55 +88,14 @@
       });
   }
 
-  function delete_user(id){
-    $.ajax({
-      type: "POST",
-      url: "controller/Controller.php",
-      data: {
-        "route": "delete_user",
-        "id_user": id
-      },
-      datatype: "text/html",
-      success: function (response) {
-        var dataJSON = JSON.parse(response);
-        console.log(dataJSON);
-      },
-      fail: function (response) {
-        console.log('request failed' + response);
-      }
-    });
-    $('#row_'+id).remove()
-  }
-
-  function update_user(id, name){
-    console.log(id + "" + name)
-    $.ajax({
-      type: "POST",
-      url: "controller/Controller.php",
-      data: {
-        "route": "update_user",
-        "id_user": id,
-        "name": name
-      },
-      datatype: "text/html",
-      success: function (response) {
-        var dataJSON = JSON.parse(response);
-        console.log(dataJSON);
-        get_users()
-      },
-      fail: function (response) {
-        console.log('request failed' + response);
-      }
-    });
-  }
-
-  function create_user(name){
+  function create_user(name, password){
     $.ajax({
         type: "POST",
         url: "controller/Controller.php",
         data: {
           "route": "create_user",
-          "name": name
+          "name": name,
+          "password": password
         },
         datatype: "text/html",
         success: function (response) {
@@ -144,7 +112,7 @@
     
     get_users()
     $('.create_user_btn').click(function() {
-      create_user($("#user-name").val())
+      create_user($("#user-name").val(), $("#user-password").val())
     })
     
     $('.update_user_btn').click(function() {
@@ -159,6 +127,7 @@
       $(".update_user_btn").hide()
       $("#user-id").parent().hide()
       $("#user-name").val("")
+      $("#user-password").val("")
       $("#user-id").val("")
       modal.find('.modal-title').text('Nouvel utilisateur')
       if(action == "update"){
